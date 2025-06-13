@@ -351,9 +351,13 @@ static bool menu_play(const struct call *call,
 }
 
 
+static void play_hangup(const struct call *call)
+{
+	menu_play(call, "hangup_aufile", "none", 0, DEVICE_PLAYER);
+}
+
 static void play_incoming(const struct call *call)
 {
-
 	if (call_state(call) != CALL_STATE_INCOMING)
 		return;
 
@@ -881,6 +885,7 @@ static void event_handler(enum ua_event ev, struct bevent *event, void *arg)
 		if (call_is_outgoing(call))
 			--menu.outcnt;
 
+		play_hangup(call);
 		break;
 
 	case UA_EVENT_CALL_REMOTE_SDP:
